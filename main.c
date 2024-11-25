@@ -15,9 +15,9 @@ int main(){
     date startdate;
     date enddate;
     date birthdate;
-  }
+  };
 
 
 
- return 0;
-  }
+  return 0;
+}
