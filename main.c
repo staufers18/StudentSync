@@ -242,10 +242,10 @@ void deleteStudent(Student** first) {
 
     //nochmalsfrage zur sicherheit
     char check;
-    printf("Sind Sie sicher, dass Sie den Studenten mit der Matrikelnummer %d löschen möchten? (j/n)\n", matrikelnummer);
+    printf("Sind Sie sicher, dass Sie den Studenten mit der Matrikelnummer %d loeschen moechten? (j/n)\n", matrikelnummer);
     scanf(" %c", &check);
     if (check != 'j') {
-        printf("Löschen abgebrochen.\n");
+        printf("Loeschen abgebrochen.\n");
         return;
     }
 
@@ -260,7 +260,7 @@ void deleteStudent(Student** first) {
                 previous->next = current->next;
             }
             free(current);
-            printf("Student mit Matrikelnummer %d wurde gelöscht.\n", matrikelnummer);
+            printf("Student mit Matrikelnummer %d wurde geloescht.\n", matrikelnummer);
             return;
         }
         previous = current;
@@ -330,6 +330,7 @@ void save_to_file(Student *first) {
 }
 
 
+
 int main() {
     Student* first = read_from_file();
     Student* last = first;
@@ -338,6 +339,7 @@ int main() {
     while (last && last->next != NULL) {
         last = last->next;
     }
+
     printf("+------------+------------+-------------+--------------+------------+------------+------------+\n"
            "|               Willkommen bei StudentSync Ihrem Studentenverwaltungsprogramm                 |\n"
            "+------------+------------+-------------+--------------+------------+------------+------------+\n");
@@ -366,7 +368,7 @@ int main() {
 
         switch (auswahl) {
             case 1:
-                printf("| Student hinzufügen - Fügen Sie einen neuen Studenten zur Liste hinzu. |\n");
+                printf("| Student hinzufuegen - Fuegen Sie einen neuen Studenten zur Liste hinzu. |\n");
                 addStudent(&first, &last);
             break;
             case 2:
@@ -378,7 +380,7 @@ int main() {
                 deleteStudent(&first);
             break;
             case 4:
-                printf("| Alle Studenten anzeigen - Zeigen Sie die vollständige Studententabelle an |\n");
+                printf("| Tabelle aller hinterlegten Studenten |\n");
                 printAllStudents(first);
             break;
             case 5:
