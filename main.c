@@ -219,9 +219,43 @@ void printAllStudents(Student* first) {
     }
 
     // Tabellenfuß ausgeben
-    printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
+    printf("+------------+------------+-------------+--------------+------------+------------+Eintraege:%d+\n", countStudents(first));
 }
 
+// Funktion zum löschen eines Studenten, mittels matrikelnummer
+void deleteStudent(Student** first) {
+    int matrikelnummer;
+    printf("Matrikelnummer: ");
+    scanf("%d", &matrikelnummer);
+
+    //nochmalsfrage zur sicherheit
+    char check;
+    printf("Sind Sie sicher, dass Sie den Studenten mit der Matrikelnummer %d löschen möchten? (j/n)\n", matrikelnummer);
+    scanf(" %c", &check);
+    if (check != 'j') {
+        printf("Löschen abgebrochen.\n");
+        return;
+    }
+
+    Student* current = *first;
+    Student* previous = NULL;
+
+    while (current != NULL) {
+        if (current->matrikelnummer == matrikelnummer) {
+            if (previous == NULL) {
+                *first = current->next;
+            } else {
+                previous->next = current->next;
+            }
+            free(current);
+            printf("Student mit Matrikelnummer %d wurde gelöscht.\n", matrikelnummer);
+            return;
+        }
+        previous = current;
+        current = current->next;
+    }
+    printf("Student mit Matrikelnummer %d wurde nicht gefunden.\n", matrikelnummer);
+}
 
 //Funktionen zum einlesen und speichern von Studenten
 Student* read_from_file(void) {
@@ -302,7 +336,7 @@ int main() {
     }
 
     while (true) {
-        printf("1: Student hinzufuegen\n2: Student suchen(Matrikelnummer)\n3: Alle Studenten anzeigen\n4: Anzahl aller Studierenden\n5: Programm beenden\n");
+        printf("1: Student hinzufuegen\n2: Studenten Suche(Matrikelnummer)\n3: Studenten entfernen(Matrikelnummer)\n4: Alle Studenten anzeigen\n5: Anzahl aller Studierenden\n6: Programm beenden\n");
         int auswahl;
         scanf("%d", &auswahl);
         switch (auswahl) {
@@ -313,12 +347,15 @@ int main() {
                 printStudent(first);
             break;
             case 3:
-                printAllStudents(first);
+                deleteStudent(&first);
             break;
             case 4:
-                printf("Anzahl aller Studierenden: %d\n", countStudents(first));
+                printAllStudents(first);
             break;
             case 5:
+                printf("Anzahl aller Studierenden: %d\n", countStudents(first));
+            break;
+            case 6:
                 save_to_file(first);
                 return 0;
 
