@@ -68,7 +68,7 @@ Student* create_Student(char* vorname, char* nachname, char* studiengang, int ma
     return student;
 }
 
-//Funktion zum einlesen eines Studenten, und ansdchließendes erstellen eines Studenten
+//Funktion zum einlesen eines Studenten(daten), und anschließendes erstellen eines Studenten, bzw. hinzufügen in die Liste
 Student* inputStudent(Student* first) {
     char vorname[51], nachname[51], studiengang[51];
     int matrikelnummer;
@@ -153,15 +153,73 @@ void addStudent(Student** first, Student** last) {
     printf("Student erfolgreich hinzugefügt.\n");
 }
 
-
-
-// Funktion zum auflisten aller Studenten
-void printAllStudents(Student* first) {
+//Funktion zum zählen aller Studenten
+int countStudents(Student* first) {
+    int count = 0;
     Student* current = first;
     while (current != NULL) {
-        printf("Vorname: %s\nNachname: %s\nStudiengang: %s\nMatrikelnummer: %i\nGeburtsdatum: %i.%i.%i\nStudienbeginn: %i.%i.%i\nStudienende: %i.%i.%i\n\n", current->vorname, current->nachname, current->studiengang, current->matrikelnummer, current->geburtsdatum.tag, current->geburtsdatum.monat, current->geburtsdatum.jahr, current->studienbeginn.tag, current->studienbeginn.monat, current->studienbeginn.jahr, current->studienende.tag, current->studienende.monat, current->studienende.jahr);
+        count++;
         current = current->next;
     }
+    return count;
+}
+
+//funktion zum ausgeben eines Studenten, mittels matrikelnummer
+void printStudent(Student* first) {
+    int matrikelnummer;
+    printf("Matrikelnummer: ");
+    scanf("%d", &matrikelnummer);
+
+    Student* current = first;
+    while (current != NULL) {
+        if (current->matrikelnummer == matrikelnummer) {
+            printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
+            printf("| Vorname    | Nachname   | Studiengang | Matrikelnr.  | Geburtsdat. | Startdat.  | Enddat.    |\n");
+            printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
+
+            printf("| %-10s | %-10s | %-11s | %-12d | %02d.%02d.%4d | %02d.%02d.%4d | %02d.%02d.%4d |\n",
+                current->vorname,
+                current->nachname,
+                current->studiengang,
+                current->matrikelnummer,
+                current->geburtsdatum.tag, current->geburtsdatum.monat, current->geburtsdatum.jahr,
+                current->studienbeginn.tag, current->studienbeginn.monat, current->studienbeginn.jahr,
+                current->studienende.tag, current->studienende.monat, current->studienende.jahr);
+
+            printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
+            return;
+        }
+        current = current->next;
+    }
+    printf("Student mit Matrikelnummer %d wurde nicht gefunden.\n", matrikelnummer);
+
+}
+
+// Funktion zum auflisten aller Studenten, in "tabellenform"
+void printAllStudents(Student* first) {
+    Student* current = first;
+
+    // Tabellenkopf ausgeben
+    printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
+    printf("| Vorname    | Nachname   | Studiengang | Matrikelnr.  | Geburtsdat. | Startdat.  | Enddat.    |\n");
+    printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
+
+    // Alle Studenten ausgeben, also spaltenweise
+    while (current != NULL) {
+        printf("| %-10s | %-10s | %-11s | %-12d | %02d.%02d.%4d | %02d.%02d.%4d | %02d.%02d.%4d |\n",
+               current->vorname,
+               current->nachname,
+               current->studiengang,
+               current->matrikelnummer,
+               current->geburtsdatum.tag, current->geburtsdatum.monat, current->geburtsdatum.jahr,
+               current->studienbeginn.tag, current->studienbeginn.monat, current->studienbeginn.jahr,
+               current->studienende.tag, current->studienende.monat, current->studienende.jahr);
+
+        current = current->next;
+    }
+
+    // Tabellenfuß ausgeben
+    printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
 }
 
 
@@ -244,7 +302,7 @@ int main() {
     }
 
     while (true) {
-        printf("1: Student hinzufügen\n2: Alle Studenten anzeigen\n3: Programm beenden\n");
+        printf("1: Student hinzufuegen\n2: Student suchen(Matrikelnummer)\n3: Alle Studenten anzeigen\n4: Anzahl aller Studierenden\n5: Programm beenden\n");
         int auswahl;
         scanf("%d", &auswahl);
         switch (auswahl) {
@@ -252,11 +310,18 @@ int main() {
                 addStudent(&first, &last);
             break;
             case 2:
-                printAllStudents(first);
+                printStudent(first);
             break;
             case 3:
+                printAllStudents(first);
+            break;
+            case 4:
+                printf("Anzahl aller Studierenden: %d\n", countStudents(first));
+            break;
+            case 5:
                 save_to_file(first);
-            return 0;
+                return 0;
+
             default:
                 printf("Ungültige Eingabe\n");
         }
