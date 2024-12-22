@@ -13,6 +13,7 @@ typedef struct {
 typedef struct Student {
     char vorname[51];
     char nachname[51];
+
     char studiengang[51];
     int matrikelnummer;
     Datum geburtsdatum, studienbeginn, studienende;
@@ -93,7 +94,7 @@ Student* inputStudent(Student* first) {
         scanf("%50s", vorname);
         clear_input();
         if (!validiereName(vorname)) {
-            printf("Ungueltiger Vorname. Bitte nur Buchstaben verwenden (max. 50 Zeichen).\n");
+            printf("Ung\x81ltiger Vorname. Bitte nur Buchstaben verwenden (max. 50 Zeichen).\n");
         }
     } while (!validiereName(vorname));
 
@@ -103,7 +104,7 @@ Student* inputStudent(Student* first) {
         scanf("%50s", nachname);
         clear_input();
         if (!validiereName(nachname)) {
-            printf("Ungueltiger Nachname. Bitte nur Buchstaben verwenden (max. 50 Zeichen).\n");
+            printf("Ung\x81ltiger Nachname. Bitte nur Buchstaben verwenden (max. 50 Zeichen).\n");
         }
     } while (!validiereName(nachname));
 
@@ -127,7 +128,7 @@ Student* inputStudent(Student* first) {
         scanf("%d.%d.%d", &geburtsdatum.tag, &geburtsdatum.monat, &geburtsdatum.jahr);
         clear_input();
         if (!validiereDatum(geburtsdatum)) {
-            printf("Ungueltiges Geburtsdatum. Bitte erneut eingeben.\n");
+            printf("Ung\x81ltiges Geburtsdatum. Bitte erneut eingeben.\n");
         }
     } while (!validiereDatum(geburtsdatum));
 
@@ -140,7 +141,7 @@ Student* inputStudent(Student* first) {
             printf("Studienbeginn muss nach dem Geburtsdatum liegen. Bitte erneut eingeben.\n");
         }
         if (!validiereDatum(studienbeginn)) {
-            printf("Ungueltiges Startdatum. Bitte erneut eingeben.\n");
+            printf("Ung\x81ltiges Startdatum. Bitte erneut eingeben.\n");
         }
     } while (!validiereDatum(studienbeginn) || !datumsVergleich(geburtsdatum, studienbeginn));
 
@@ -153,7 +154,7 @@ Student* inputStudent(Student* first) {
             printf("Studienende muss nach dem Studienbeginn liegen. Bitte erneut eingeben.\n");
         }
         if (!validiereDatum(studienende)) {
-            printf("Ungueltiges Enddatum. Bitte erneut eingeben.\n");
+            printf("Ung\x81ltiges Enddatum. Bitte erneut eingeben.\n");
         }
     } while (!validiereDatum(studienende) || !datumsVergleich(studienbeginn, studienende));
 
@@ -176,7 +177,7 @@ void addStudent(Student** first, Student** last) {
         *last = newStudent;
     }
 
-    printf("Student erfolgreich hinzugefügt.\n");
+    printf("Student erfolgreich hinzugef\x81gt.\n");
 }
 
 //Funktion zum zählen aller Studenten
@@ -270,7 +271,7 @@ void printAllStudents(Student* first) {
     }
 
     // Tabellenfuß ausgeben
-    printf("+------------+------------+-------------+--------------+------------+------------+Eintraege:[%d]\n", count);
+    printf("+------------+------------+-------------+--------------+------------+------------+Eintr\x84ge:[%d]\n", count);
 
     //speicher freigeben von der liste
     free(array);
@@ -283,10 +284,10 @@ void deleteStudent(Student** first) {
 
     //nochmalsfrage zur sicherheit
     char check;
-    printf("Sind Sie sicher, dass Sie den Studenten mit der Matrikelnummer %d loeschen moechten? (j/n)\n", matrikelnummer);
+    printf("Sind Sie sicher, dass Sie den Studenten mit der Matrikelnummer %d l\x94schen m\x94""chten? (j/n)\n", matrikelnummer);
     scanf(" %c", &check);
     if (check != 'j') {
-        printf("Loeschen abgebrochen.\n");
+        printf("L\x94schen abgebrochen.\n");
         return;
     }
 
@@ -390,14 +391,14 @@ int main() {
         printf("+------------+------------+-------------+\n");
         printf("|              StudentSync              |\n");
         printf("+------------+------------+-------------+\n");
-        printf("| 1 | Student hinzufuegen                |\n");
+        printf("| 1 | Student hinzuf\x81gen                |\n");
         printf("| 2 | Studenten suchen (Matrikelnummer) |\n");
         printf("| 3 | Studenten entfernen (Matrikelnummer)|\n");
         printf("| 4 | Alle Studenten anzeigen           |\n");
         printf("| 5 | Anzahl aller Studierenden         |\n");
         printf("| 6 | Programm beenden                  |\n");
         printf("+------------+------------+-------------+\n");
-        printf("Bitte waehlen Sie eine Option: ");
+        printf("Bitte w\x84hlen Sie eine Option: ");
 
         int auswahl;
         scanf("%d", &auswahl);
@@ -409,7 +410,7 @@ int main() {
 
         switch (auswahl) {
             case 1:
-                printf("| Student hinzufuegen - Fuegen Sie einen neuen Studenten zur Liste hinzu. |\n");
+                printf("| Student hinzuf\x81gen - F\x81gen Sie einen neuen Studenten zur Liste hinzu. |\n");
                 addStudent(&first, &last);
             break;
             case 2:
@@ -430,11 +431,11 @@ int main() {
             case 6:
                 save_to_file(first);
                 printf(     "+------------+------------+-------------+--------------+------------+------------+------------+\n"
-                                "                      Danke fuer die Nutzung von StudentSync. Auf Wiedersehen!                 \n");
+                                "                      Danke f\x81r die Nutzung von StudentSync. Auf Wiedersehen!                 \n");
                 return 0;
 
             default:
-                printf("Ungueltige Eingabe, bitte geben Sie eine Gueltige Optionsnummer ein.(1-6)\n");
+                printf("Ung\x81ltige Eingabe, bitte geben Sie eine Gl\x81tige Optionsnummer ein.(1-6)\n");
         }
     }
 }
