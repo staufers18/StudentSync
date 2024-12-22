@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdlib.h> //für consolen clear
 
 typedef struct {
     int tag;
@@ -18,6 +19,8 @@ typedef struct Student {
     Datum geburtsdatum, studienbeginn, studienende;
     struct Student* next;
 } Student;
+
+void clear_input(void){while ( getchar() != '\n' );} //funktion zum leeren des input buffers, da es sonst zu fehler kommen kann bei falscher eingabe(loop)
 
 //validierungs Funktionen
 bool validiereName(const char* name) {
@@ -46,6 +49,8 @@ bool matrikelnummerEinzigartig(Student *first, int matrikelnummer) {
         if (current->matrikelnummer == matrikelnummer) return false;
         current = current->next;
     }
+
+
     return true;
 }
 
@@ -78,6 +83,7 @@ Student* inputStudent(Student* first) {
     do {
         printf("Vorname: ");
         scanf("%50s", vorname);
+        clear_input();
         if (!validiereName(vorname)) {
             printf("Ungültiger Vorname. Bitte nur Buchstaben verwenden (max. 50 Zeichen).\n");
         }
@@ -87,6 +93,7 @@ Student* inputStudent(Student* first) {
     do {
         printf("Nachname: ");
         scanf("%50s", nachname);
+        clear_input();
         if (!validiereName(nachname)) {
             printf("Ungültiger Nachname. Bitte nur Buchstaben verwenden (max. 50 Zeichen).\n");
         }
@@ -100,6 +107,7 @@ Student* inputStudent(Student* first) {
     do {
         printf("Matrikelnummer: ");
         scanf("%d", &matrikelnummer);
+        clear_input();
         if (!matrikelnummerEinzigartig(first, matrikelnummer)) {
             printf("Matrikelnummer existiert bereits. Bitte eine andere Nummer eingeben.\n");
         }
@@ -109,6 +117,7 @@ Student* inputStudent(Student* first) {
     do {
         printf("Geburtsdatum (dd.mm.jjjj): ");
         scanf("%d.%d.%d", &geburtsdatum.tag, &geburtsdatum.monat, &geburtsdatum.jahr);
+        clear_input();
         if (!validiereDatum(geburtsdatum)) {
             printf("Ungültiges Geburtsdatum. Bitte erneut eingeben.\n");
         }
@@ -118,6 +127,7 @@ Student* inputStudent(Student* first) {
     do {
         printf("Studienbeginn (dd.mm.jjjj): ");
         scanf("%d.%d.%d", &studienbeginn.tag, &studienbeginn.monat, &studienbeginn.jahr);
+        clear_input();
         if (!validiereDatum(studienbeginn)) {
             printf("Ungültiges Startdatum. Bitte erneut eingeben.\n");
         }
@@ -127,6 +137,7 @@ Student* inputStudent(Student* first) {
     do {
         printf("Studienende (dd.mm.jjjj): ");
         scanf("%d.%d.%d", &studienende.tag, &studienende.monat, &studienende.jahr);
+        clear_input();
         if (!validiereDatum(studienende)) {
             printf("Ungültiges Enddatum. Bitte erneut eingeben.\n");
         }
@@ -134,6 +145,7 @@ Student* inputStudent(Student* first) {
 
     return create_Student(vorname, nachname, studiengang, matrikelnummer, geburtsdatum, studienbeginn, studienende);
 }
+
 void addStudent(Student** first, Student** last) {
     Student* newStudent = inputStudent(*first);
 
@@ -219,7 +231,7 @@ void printAllStudents(Student* first) {
     }
 
     // Tabellenfuß ausgeben
-    printf("+------------+------------+-------------+--------------+------------+------------+Eintraege:%d+\n", countStudents(first));
+    printf("+------------+------------+-------------+--------------+------------+------------+Eintraege:[%d]\n", countStudents(first));
 }
 
 // Funktion zum löschen eines Studenten, mittels matrikelnummer
@@ -261,8 +273,7 @@ void deleteStudent(Student** first) {
 Student* read_from_file(void) {
     FILE *savefile = fopen("students.csv", "r");
     if (savefile == NULL) {
-        printf("Datei konnte nicht geöffnet werden\n");
-        return NULL;
+        FILE *savefile = fopen("students.csv", "w");
     }
 
     Student* first = NULL;
@@ -299,16 +310,11 @@ Student* read_from_file(void) {
     }
 
     fclose(savefile); // Datei schließen
-    printf("Studenten wurden erfolgreich geladen.\n");
     return first;
 }
 
 void save_to_file(Student *first) {
     FILE* savefile = fopen("students.csv", "w");
-    if (savefile == NULL) {
-        printf("Datei konnte nicht geöffnet werden\n");
-        return;
-    }
 
     Student* current = first;
     while (current != NULL) {
@@ -321,9 +327,7 @@ void save_to_file(Student *first) {
     }
 
     fclose(savefile); // Datei schließen
-    printf("Studenten wurden erfolgreich gespeichert.\n");
 }
-
 
 
 int main() {
@@ -334,33 +338,60 @@ int main() {
     while (last && last->next != NULL) {
         last = last->next;
     }
+    printf("+------------+------------+-------------+--------------+------------+------------+------------+\n"
+           "|               Willkommen bei StudentSync Ihrem Studentenverwaltungsprogramm                 |\n"
+           "+------------+------------+-------------+--------------+------------+------------+------------+\n");
 
     while (true) {
-        printf("1: Student hinzufuegen\n2: Studenten Suche(Matrikelnummer)\n3: Studenten entfernen(Matrikelnummer)\n4: Alle Studenten anzeigen\n5: Anzahl aller Studierenden\n6: Programm beenden\n");
+        printf("\n");
+        printf("+------------+------------+-------------+\n");
+        printf("|              StudentSync              |\n");
+        printf("+------------+------------+-------------+\n");
+        printf("| 1 | Student hinzufuegen                |\n");
+        printf("| 2 | Studenten suchen (Matrikelnummer) |\n");
+        printf("| 3 | Studenten entfernen (Matrikelnummer)|\n");
+        printf("| 4 | Alle Studenten anzeigen           |\n");
+        printf("| 5 | Anzahl aller Studierenden         |\n");
+        printf("| 6 | Programm beenden                  |\n");
+        printf("+------------+------------+-------------+\n");
+        printf("Bitte waehlen Sie eine Option: ");
+
         int auswahl;
         scanf("%d", &auswahl);
+
+        // Checkt ob Eingabe ein Zahl zwischen 1 und 6 ist
+        if (auswahl < 1 || auswahl > 6) {
+            clear_input();
+        }
+
         switch (auswahl) {
             case 1:
+                printf("| Student hinzufügen - Fügen Sie einen neuen Studenten zur Liste hinzu. |\n");
                 addStudent(&first, &last);
             break;
             case 2:
+                printf("| Studenten suchen - Finden Sie einen Studenten per Matrikelnummer |\n");
                 printStudent(first);
             break;
             case 3:
+                printf("| Studenten entfernen - Entfernen Sie einen Studenten per Matrikelnummer |\n");
                 deleteStudent(&first);
             break;
             case 4:
+                printf("| Alle Studenten anzeigen - Zeigen Sie die vollständige Studententabelle an |\n");
                 printAllStudents(first);
             break;
             case 5:
-                printf("Anzahl aller Studierenden: %d\n", countStudents(first));
+                printf("\nAnzahl aller Studierenden: %d\n\n", countStudents(first));
             break;
             case 6:
                 save_to_file(first);
+                printf(     "+------------+------------+-------------+--------------+------------+------------+------------+\n"
+                                "                      Danke fuer die Nutzung von StudentSync. Auf Wiedersehen!                 \n");
                 return 0;
 
             default:
-                printf("Ungültige Eingabe\n");
+                printf("Ungueltige Eingabe, bitte geben Sie eine Gueltige Optionsnummer ein.(1-6)\n");
         }
     }
 }
