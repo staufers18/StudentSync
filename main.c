@@ -207,33 +207,60 @@ void printStudent(Student* first) {
 
 }
 
-// Funktion zum auflisten aller Studenten, in "tabellenform"
+// Funktion zum auflisten aller Studenten, in "tabellenform" und alphabetisch nach nachnamen sortiert
 void printAllStudents(Student* first) {
+    if (first == NULL) {
+        printf("Keine Studenten vorhanden.\n");
+        return;
+    }
+
+    // Kopiere die Liste in ein temporäres Array zur leichteren Sortierung
+    int count = countStudents(first);
+    Student** array = malloc(count * sizeof(Student*));
+    if (!array) {
+        printf("Speicherfehler.\n");
+        return;
+    }
     Student* current = first;
+    for (int i = 0; i < count; i++) {
+        array[i] = current;
+        current = current->next;
+    }
+
+    // Bubble Sort nach nachnamen
+    for (int i = 0; i < count - 1; i++) {
+        for (int j = 0; j < count - i - 1; j++) {
+            if (strcasecmp(array[j]->nachname, array[j + 1]->nachname) > 0) {
+                Student* temp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = temp;
+            }
+        }
+    }
 
     // Tabellenkopf ausgeben
     printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
     printf("| Vorname    | Nachname   | Studiengang | Matrikelnr.  | Geburtsdat. | Startdat.  | Enddat.    |\n");
     printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
 
-    // Alle Studenten ausgeben, also spaltenweise
-    while (current != NULL) {
+    // Sortierte Studenten ausgeben
+    for (int i = 0; i < count; i++) {
         printf("| %-10s | %-10s | %-11s | %-12d | %02d.%02d.%4d | %02d.%02d.%4d | %02d.%02d.%4d |\n",
-               current->vorname,
-               current->nachname,
-               current->studiengang,
-               current->matrikelnummer,
-               current->geburtsdatum.tag, current->geburtsdatum.monat, current->geburtsdatum.jahr,
-               current->studienbeginn.tag, current->studienbeginn.monat, current->studienbeginn.jahr,
-               current->studienende.tag, current->studienende.monat, current->studienende.jahr);
-
-        current = current->next;
+               array[i]->vorname,
+               array[i]->nachname,
+               array[i]->studiengang,
+               array[i]->matrikelnummer,
+               array[i]->geburtsdatum.tag, array[i]->geburtsdatum.monat, array[i]->geburtsdatum.jahr,
+               array[i]->studienbeginn.tag, array[i]->studienbeginn.monat, array[i]->studienbeginn.jahr,
+               array[i]->studienende.tag, array[i]->studienende.monat, array[i]->studienende.jahr);
     }
 
     // Tabellenfuß ausgeben
-    printf("+------------+------------+-------------+--------------+------------+------------+Eintraege:[%d]\n", countStudents(first));
-}
+    printf("+------------+------------+-------------+--------------+------------+------------+Eintraege:[%d]\n", count);
 
+    //speicher freigeben von der liste
+    free(array);
+}
 // Funktion zum löschen eines Studenten, mittels matrikelnummer
 void deleteStudent(Student** first) {
     int matrikelnummer;
