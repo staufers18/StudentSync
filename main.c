@@ -3,7 +3,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
-#include <stdlib.h> //für consolen clear
 
 typedef struct {
     int tag;
@@ -45,11 +44,12 @@ bool validiereDatum(Datum d) {
 }
 bool matrikelnummerEinzigartig(Student *first, int matrikelnummer) {
     Student* current = first;
+
+    if (matrikelnummer < 10000000 || matrikelnummer > 99999999) return false; //matrikelnummer muss 8 stellig sein
     while (current != NULL) {
         if (current->matrikelnummer == matrikelnummer) return false;
         current = current->next;
     }
-
 
     return true;
 }
@@ -85,7 +85,7 @@ Student* inputStudent(Student* first) {
         scanf("%50s", vorname);
         clear_input();
         if (!validiereName(vorname)) {
-            printf("Ungültiger Vorname. Bitte nur Buchstaben verwenden (max. 50 Zeichen).\n");
+            printf("Ungueltiger Vorname. Bitte nur Buchstaben verwenden (max. 50 Zeichen).\n");
         }
     } while (!validiereName(vorname));
 
@@ -95,7 +95,7 @@ Student* inputStudent(Student* first) {
         scanf("%50s", nachname);
         clear_input();
         if (!validiereName(nachname)) {
-            printf("Ungültiger Nachname. Bitte nur Buchstaben verwenden (max. 50 Zeichen).\n");
+            printf("Ungueltiger Nachname. Bitte nur Buchstaben verwenden (max. 50 Zeichen).\n");
         }
     } while (!validiereName(nachname));
 
@@ -109,7 +109,7 @@ Student* inputStudent(Student* first) {
         scanf("%d", &matrikelnummer);
         clear_input();
         if (!matrikelnummerEinzigartig(first, matrikelnummer)) {
-            printf("Matrikelnummer existiert bereits. Bitte eine andere Nummer eingeben.\n");
+            printf("Matrikelnummer existiert bereits, oder ist nicht 8 Zeichen lang. Bitte eine andere Nummer eingeben.\n");
         }
     } while (!matrikelnummerEinzigartig(first, matrikelnummer));
 
@@ -119,7 +119,7 @@ Student* inputStudent(Student* first) {
         scanf("%d.%d.%d", &geburtsdatum.tag, &geburtsdatum.monat, &geburtsdatum.jahr);
         clear_input();
         if (!validiereDatum(geburtsdatum)) {
-            printf("Ungültiges Geburtsdatum. Bitte erneut eingeben.\n");
+            printf("Ungueltiges Geburtsdatum. Bitte erneut eingeben.\n");
         }
     } while (!validiereDatum(geburtsdatum));
 
@@ -129,7 +129,7 @@ Student* inputStudent(Student* first) {
         scanf("%d.%d.%d", &studienbeginn.tag, &studienbeginn.monat, &studienbeginn.jahr);
         clear_input();
         if (!validiereDatum(studienbeginn)) {
-            printf("Ungültiges Startdatum. Bitte erneut eingeben.\n");
+            printf("Ungueltiges Startdatum. Bitte erneut eingeben.\n");
         }
     } while (!validiereDatum(studienbeginn));
 
@@ -139,7 +139,7 @@ Student* inputStudent(Student* first) {
         scanf("%d.%d.%d", &studienende.tag, &studienende.monat, &studienende.jahr);
         clear_input();
         if (!validiereDatum(studienende)) {
-            printf("Ungültiges Enddatum. Bitte erneut eingeben.\n");
+            printf("Ungueltiges Enddatum. Bitte erneut eingeben.\n");
         }
     } while (!validiereDatum(studienende));
 
