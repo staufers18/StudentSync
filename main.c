@@ -108,7 +108,7 @@ Student* inputStudent(Student* first) {
         }
     } while (!validiereName(nachname));
 
-    // Studiengang validieren (keine zusätzliche Validierung)
+    // keine zusätzliche Validierung für Studiengang, da dieser auch Zahlen enthalten kann
     printf("Studiengang: ");
     scanf("%50s", studiengang);
 
@@ -137,6 +137,7 @@ Student* inputStudent(Student* first) {
         printf("Studienbeginn (dd.mm.jjjj): ");
         scanf("%d.%d.%d", &studienbeginn.tag, &studienbeginn.monat, &studienbeginn.jahr);
         clear_input();
+
         if (!datumsVergleich(geburtsdatum, studienbeginn)) {
             printf("Studienbeginn muss nach dem Geburtsdatum liegen. Bitte erneut eingeben.\n");
         }
@@ -178,6 +179,7 @@ void addStudent(Student** first, Student** last) {
     }
 
     printf("Student erfolgreich hinzugef\x81gt.\n");
+
 }
 
 //Funktion zum zählen aller Studenten
