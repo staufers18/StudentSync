@@ -53,6 +53,14 @@ bool matrikelnummerEinzigartig(Student *first, int matrikelnummer) {
 
     return true;
 }
+bool datumsVergleich(Datum d1, Datum d2) {
+    if (d1.jahr < d2.jahr) return true;
+    if (d1.jahr > d2.jahr) return false;
+    if (d1.monat < d2.monat) return true;
+    if (d1.monat > d2.monat) return false;
+    if (d1.tag < d2.tag) return true;
+    return false;
+}
 
 // Funktion dient zum erstellen eines neuen Studenten und gibt einen Pointer auf den erstellten Studenten zurück
 Student* create_Student(char* vorname, char* nachname, char* studiengang, int matrikelnummer, Datum geburtsdatum, Datum studienbeginn, Datum studienende) {
@@ -128,20 +136,26 @@ Student* inputStudent(Student* first) {
         printf("Studienbeginn (dd.mm.jjjj): ");
         scanf("%d.%d.%d", &studienbeginn.tag, &studienbeginn.monat, &studienbeginn.jahr);
         clear_input();
+        if (!datumsVergleich(geburtsdatum, studienbeginn)) {
+            printf("Studienbeginn muss nach dem Geburtsdatum liegen. Bitte erneut eingeben.\n");
+        }
         if (!validiereDatum(studienbeginn)) {
             printf("Ungueltiges Startdatum. Bitte erneut eingeben.\n");
         }
-    } while (!validiereDatum(studienbeginn));
+    } while (!validiereDatum(studienbeginn) || !datumsVergleich(geburtsdatum, studienbeginn));
 
     // Studienende validieren
     do {
         printf("Studienende (dd.mm.jjjj): ");
         scanf("%d.%d.%d", &studienende.tag, &studienende.monat, &studienende.jahr);
         clear_input();
+        if (!datumsVergleich(studienbeginn, studienende)) {
+            printf("Studienende muss nach dem Studienbeginn liegen. Bitte erneut eingeben.\n");
+        }
         if (!validiereDatum(studienende)) {
             printf("Ungueltiges Enddatum. Bitte erneut eingeben.\n");
         }
-    } while (!validiereDatum(studienende));
+    } while (!validiereDatum(studienende) || !datumsVergleich(studienbeginn, studienende));
 
     return create_Student(vorname, nachname, studiengang, matrikelnummer, geburtsdatum, studienbeginn, studienende);
 }
