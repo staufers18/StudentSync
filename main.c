@@ -1,14 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h> // Wichtig für strcasecmp
 #include <ctype.h>
 #include <stdbool.h>
-#ifdef _WIN32
-    #define strcasecmp _stricmp
-#endif
 
-
+int compareIgnoreCase(const char* s1, const char* s2) {
+    while (*s1 && *s2) {
+        char c1 = tolower((unsigned char)*s1);
+        char c2 = tolower((unsigned char)*s2);
+        if (c1 != c2) {
+            return c1 - c2;
+        }
+        s1++;
+        s2++;
+    }
+    return (unsigned char)*s1 - (unsigned char)*s2;
+}
 
 typedef struct {
     int tag;
@@ -253,7 +260,7 @@ void printAllStudents(Student* first) {
     // Bubble Sort nach nachnamen
     for (int i = 0; i < count - 1; i++) {
         for (int j = 0; j < count - i - 1; j++) {
-            if (strcasecmp(array[j]->nachname, array[j + 1]->nachname) > 0) {
+            if (compareIgnoreCase(array[j]->nachname, array[j + 1]->nachname) > 0) {
                 Student* temp = array[j];
                 array[j] = array[j + 1];
                 array[j + 1] = temp;
