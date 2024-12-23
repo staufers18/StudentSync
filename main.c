@@ -426,16 +426,16 @@ int main() {
 
     while (true) {
         printf("\n");
-        printf("+------------+------------+-------------+\n");
-        printf("|              StudentSync              |\n");
-        printf("+------------+------------+-------------+\n");
+        printf("+-------------+-------------+--------------+\n");
+        printf("|              StudentSync                 |\n");
+        printf("+-------------+-------------+--------------+\n");
         printf("| 1 | Student hinzuf\x81gen                |\n");
-        printf("| 2 | Studenten suchen (Matrikelnummer) |\n");
-        printf("| 3 | Studenten entfernen (Matrikelnummer)|\n");
-        printf("| 4 | Alle Studenten anzeigen           |\n");
-        printf("| 5 | Anzahl aller Studierenden         |\n");
-        printf("| 6 | Programm beenden                  |\n");
-        printf("+------------+------------+-------------+\n");
+        printf("| 2 | Studenten suchen (Matrikelnummer)    |\n");
+        printf("| 3 | Studenten entfernen (Matrikelnummer) |\n");
+        printf("| 4 | Alle Studenten anzeigen              |\n");
+        printf("| 5 | Anzahl aller Studierenden            |\n");
+        printf("| 6 | Programm beenden                     |\n");
+        printf("+-------------+-------------+--------------+\n");
         printf("Bitte w\x84hlen Sie eine Option: ");
 
         int auswahl;
