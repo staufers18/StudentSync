@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 
+
 //Funktionen zum vergleichen von strings, unabhängig von groß und kleinschreibung, da strcmp case sensitive ist
 int compareIgnoreCase(const char* s1, const char* s2) {
     while (*s1 && *s2) {
@@ -34,6 +35,8 @@ typedef struct Student{
     struct Student* next;
 } Student;
 
+Datum heute = { 31, 12, 2024 }; //heutiges Datum, zum vergleichen ob Student volljährig ist
+
 void clear_input(void){while ( getchar() != '\n' );} //funktion zum leeren des input buffers, da es sonst zu fehler kommen kann bei falscher eingabe(loop)
 
 //validierungs Funktionen
@@ -54,7 +57,14 @@ bool validiereDatum(Datum d) {
         if (schaltjahr && d.tag > 29) return false;
         if (!schaltjahr && d.tag > 28) return false;
     }
-    if (d.jahr + 18 < 2024) return false;    //muss mindestens 18 jahre alt sein
+    return true;
+}
+bool volljaehrig(Datum geburtsdatum, Datum vergleichsdatum) {
+    if (vergleichsdatum.jahr - geburtsdatum.jahr < 18) return false;
+    if (vergleichsdatum.jahr - geburtsdatum.jahr > 18) return true;
+    if (vergleichsdatum.monat < geburtsdatum.monat) return false;
+    if (vergleichsdatum.monat > geburtsdatum.monat) return true;
+    if (vergleichsdatum.tag < geburtsdatum.tag) return false;
     return true;
 }
 bool matrikelnummerEinzigartig(Student *first, int matrikelnummer) {
@@ -148,9 +158,12 @@ Student* inputStudent(Student* first) {
         scanf("%d.%d.%d", &geburtsdatum.tag, &geburtsdatum.monat, &geburtsdatum.jahr);
         clear_input();
         if (!validiereDatum(geburtsdatum)) {
-            printf("Ung\x81ltiges Geburtsdatum. Bitte erneut eingeben.\n");
+            printf("Ung\x81ltiges Geburtsdatum, es existiert nicht. Bitte erneut eingeben.\n");
         }
-    } while (!validiereDatum(geburtsdatum));
+        if (!volljaehrig(geburtsdatum, heute)) {
+            printf("Student muss vollj\x84hrig sein. Bitte erneut eingeben.\n");
+        }
+    } while (!validiereDatum(geburtsdatum) || !volljaehrig(geburtsdatum, heute));
 
     // Studienbeginn validieren
     do {
@@ -162,9 +175,12 @@ Student* inputStudent(Student* first) {
             printf("Studienbeginn muss nach dem Geburtsdatum liegen. Bitte erneut eingeben.\n");
         }
         if (!validiereDatum(studienbeginn)) {
-            printf("Ung\x81ltiges Startdatum. Bitte erneut eingeben.\n");
+            printf("Ung\x81ltiges Startdatum, es existiert nicht. Bitte erneut eingeben.\n");
         }
-    } while (!validiereDatum(studienbeginn) || !datumsVergleich(geburtsdatum, studienbeginn));
+        if (!volljaehrig(geburtsdatum, studienbeginn)) {
+            printf("Student muss zum Studienbeginn vollj\x84hrig sein. Bitte erneut eingeben.\n");
+        }
+    } while (!validiereDatum(studienbeginn) || !datumsVergleich(geburtsdatum, studienbeginn) || !volljaehrig(geburtsdatum, studienbeginn));
 
     // Studienende validieren
     do {
@@ -175,7 +191,7 @@ Student* inputStudent(Student* first) {
             printf("Studienende muss nach dem Studienbeginn liegen. Bitte erneut eingeben.\n");
         }
         if (!validiereDatum(studienende)) {
-            printf("Ung\x81ltiges Enddatum. Bitte erneut eingeben.\n");
+            printf("Ung\x81ltiges Enddatum, es existiert nicht. Bitte erneut eingeben.\n");
         }
     } while (!validiereDatum(studienende) || !datumsVergleich(studienbeginn, studienende));
 
