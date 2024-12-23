@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 
+//Funktionen zum vergleichen von strings, unabhängig von groß und kleinschreibung, da strcmp case sensitive ist
 int compareIgnoreCase(const char* s1, const char* s2) {
     while (*s1 && *s2) {
         char c1 = tolower((unsigned char)*s1);
@@ -53,18 +54,21 @@ bool validiereDatum(Datum d) {
         if (schaltjahr && d.tag > 29) return false;
         if (!schaltjahr && d.tag > 28) return false;
     }
-    if (d.jahr + 18 > 2024) return false;    //muss mindestens 18 jahre alt sein
+    if (d.jahr + 18 < 2024) return false;    //muss mindestens 18 jahre alt sein
     return true;
 }
 bool matrikelnummerEinzigartig(Student *first, int matrikelnummer) {
     Student* current = first;
 
-    if (matrikelnummer < 10000000 || matrikelnummer > 99999999) return false; //matrikelnummer muss 8 stellig sein
     while (current != NULL) {
         if (current->matrikelnummer == matrikelnummer) return false;
         current = current->next;
     }
 
+    return true;
+}
+bool matrikelnummerlaenge(int matrikelnummer) {
+    if (matrikelnummer < 10000000 || matrikelnummer > 99999999) return false; //matrikelnummer muss 8 stellig sein
     return true;
 }
 bool datumsVergleich(Datum d1, Datum d2) {
@@ -131,9 +135,12 @@ Student* inputStudent(Student* first) {
         scanf("%d", &matrikelnummer);
         clear_input();
         if (!matrikelnummerEinzigartig(first, matrikelnummer)) {
-            printf("Matrikelnummer existiert bereits, oder ist nicht 8 Zeichen lang. Bitte eine andere Nummer eingeben.\n");
+            printf("Matrikelnummer existiert bereits. Bitte eine andere Nummer eingeben.\n");
         }
-    } while (!matrikelnummerEinzigartig(first, matrikelnummer));
+        if (!matrikelnummerlaenge(matrikelnummer)) {
+            printf("Matrikelnummer muss 8 Zeichen lang sein und darf keine Buchstaben enthalten. Bitte erneut eingeben.\n");
+        }
+    } while (!matrikelnummerEinzigartig(first, matrikelnummer) || !matrikelnummerlaenge(matrikelnummer));
 
     // Geburtsdatum validieren
     do {
