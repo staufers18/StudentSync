@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
-
+#include <time.h>
 
 //Funktionen zum vergleichen von strings, unabhängig von groß und kleinschreibung, da strcmp case sensitive ist
 int compareIgnoreCase(const char* s1, const char* s2) {
@@ -35,7 +35,13 @@ typedef struct Student{
     struct Student* next;
 } Student;
 
-Datum heute = { 31, 12, 2024 }; //heutiges Datum, zum vergleichen ob Student volljährig ist
+void datum_heute(){
+    time_t now;
+    time(&now);
+    struct tm *tmToday;
+    tmToday = localtime(&now);
+    Datum heute = {tmToday->tm_mday, tmToday->tm_mon, tmToday->tm_year}; //heutiges Datum
+}
 
 void clear_input(void){while ( getchar() != '\n' );} //funktion zum leeren des input buffers, da es sonst zu fehler kommen kann bei falscher eingabe(loop)
 
@@ -426,16 +432,16 @@ int main() {
 
     while (true) {
         printf("\n");
-        printf("+-------------+-------------+--------------+\n");
-        printf("|              StudentSync                 |\n");
-        printf("+-------------+-------------+--------------+\n");
-        printf("| 1 | Student hinzuf\x81gen                   |\n");
-        printf("| 2 | Studenten suchen (Matrikelnummer)    |\n");
-        printf("| 3 | Studenten entfernen (Matrikelnummer) |\n");
-        printf("| 4 | Alle Studenten anzeigen              |\n");
-        printf("| 5 | Anzahl aller Studierenden            |\n");
-        printf("| 6 | Programm beenden                     |\n");
-        printf("+-------------+-------------+--------------+\n");
+        printf("+------------+------------+-------------+\n");
+        printf("|              StudentSync              |\n");
+        printf("+------------+------------+-------------+\n");
+        printf("| 1 | Student hinzuf\x81gen                |\n");
+        printf("| 2 | Studenten suchen (Matrikelnummer) |\n");
+        printf("| 3 | Studenten entfernen (Matrikelnummer)|\n");
+        printf("| 4 | Alle Studenten anzeigen           |\n");
+        printf("| 5 | Anzahl aller Studierenden         |\n");
+        printf("| 6 | Programm beenden                  |\n");
+        printf("+------------+------------+-------------+\n");
         printf("Bitte w\x84hlen Sie eine Option: ");
 
         int auswahl;
