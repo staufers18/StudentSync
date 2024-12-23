@@ -10,7 +10,7 @@ typedef struct {
     int jahr;
 } Datum;
 
-typedef struct {
+typedef struct Student{
     char vorname[51];
     char nachname[51];
 
