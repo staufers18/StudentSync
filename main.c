@@ -245,7 +245,7 @@ void printStudent(Student* first) {
     while (current != NULL) {
         if (current->matrikelnummer == matrikelnummer) {
             printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
-            printf("| Vorname    | Nachname   | Studiengang | Matrikelnr.  | Geburtsdat. | Startdat.  | Enddat.    |\n");
+            printf("| Vorname    | Nachname   | Studiengang | Matrikelnr.  | Geburtsdat.| Startdat.  | Enddat.    |\n");
             printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
 
             printf("| %-10s | %-10s | %-11s | %-12d | %02d.%02d.%4d | %02d.%02d.%4d | %02d.%02d.%4d |\n",
@@ -299,7 +299,7 @@ void printAllStudents(Student* first) {
 
     // Tabellenkopf ausgeben
     printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
-    printf("| Vorname    | Nachname   | Studiengang | Matrikelnr.  | Geburtsdat. | Startdat.  | Enddat.    |\n");
+    printf("| Vorname    | Nachname   | Studiengang | Matrikelnr.  | Geburtsdat.| Startdat.  | Enddat.    |\n");
     printf("+------------+------------+-------------+--------------+------------+------------+------------+\n");
 
     // Sortierte Studenten ausgeben
@@ -434,16 +434,16 @@ int main() {
 
     while (true) {
         printf("\n");
-        printf("+------------+------------+-------------+\n");
-        printf("|              StudentSync              |\n");
-        printf("+------------+------------+-------------+\n");
-        printf("| 1 | Student hinzuf\x81gen                |\n");
-        printf("| 2 | Studenten suchen (Matrikelnummer) |\n");
+        printf("+-------------+-------------+-------------+\n");
+        printf("|               StudentSync               |\n");
+        printf("+-------------+-------------+-------------+\n");
+        printf("| 1 | Student hinzuf\x81gen                  |\n");
+        printf("| 2 | Studenten suchen (Matrikelnummer)   |\n");
         printf("| 3 | Studenten entfernen (Matrikelnummer)|\n");
-        printf("| 4 | Alle Studenten anzeigen           |\n");
-        printf("| 5 | Anzahl aller Studierenden         |\n");
-        printf("| 6 | Programm beenden                  |\n");
-        printf("+------------+------------+-------------+\n");
+        printf("| 4 | Alle Studenten anzeigen             |\n");
+        printf("| 5 | Anzahl aller Studierenden           |\n");
+        printf("| 6 | Programm beenden                    |\n");
+        printf("+-------------+-------------+-------------+\n");
         printf("Bitte w\x84hlen Sie eine Option: ");
 
         int auswahl;
