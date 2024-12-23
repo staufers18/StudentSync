@@ -429,7 +429,7 @@ int main() {
         printf("+-------------+-------------+--------------+\n");
         printf("|              StudentSync                 |\n");
         printf("+-------------+-------------+--------------+\n");
-        printf("| 1 | Student hinzuf\x81gen                |\n");
+        printf("| 1 | Student hinzuf\x81gen                   |\n");
         printf("| 2 | Studenten suchen (Matrikelnummer)    |\n");
         printf("| 3 | Studenten entfernen (Matrikelnummer) |\n");
         printf("| 4 | Alle Studenten anzeigen              |\n");
