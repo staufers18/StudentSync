@@ -40,7 +40,7 @@ bool validiereDatum(Datum d) {
         if (schaltjahr && d.tag > 29) return false;
         if (!schaltjahr && d.tag > 28) return false;
     }
-    if (d.jahr + 18 < 2024) return true;    //muss mindestens 18 jahre alt sein
+    if (d.jahr + 18 > 2024) return false;    //muss mindestens 18 jahre alt sein
     return true;
 }
 bool matrikelnummerEinzigartig(Student *first, int matrikelnummer) {
