@@ -35,12 +35,12 @@ typedef struct Student{
     struct Student* next;
 } Student;
 
-void datum_heute(){
+Datum datum_heute(){
     time_t now;
     time(&now);
     struct tm *tmToday;
     tmToday = localtime(&now);
-    Datum heute = {tmToday->tm_mday, tmToday->tm_mon, tmToday->tm_year}; //heutiges Datum
+    return (Datum) {tmToday->tm_mday, tmToday->tm_mon + 1, tmToday->tm_year + 1900};
 }
 
 void clear_input(void){while ( getchar() != '\n' );} //funktion zum leeren des input buffers, da es sonst zu fehler kommen kann bei falscher eingabe(loop)
@@ -116,7 +116,7 @@ Student* create_Student(char* vorname, char* nachname, char* studiengang, int ma
 }
 
 //Funktion zum einlesen eines Studenten(daten), und anschließendes erstellen eines Studenten, bzw. hinzufügen in die Liste
-Student* inputStudent(Student* first) {
+Student* inputStudent(Student* first, Datum heute) {
     char vorname[51], nachname[51], studiengang[51];
     int matrikelnummer;
     Datum geburtsdatum, studienbeginn, studienende;
@@ -204,8 +204,8 @@ Student* inputStudent(Student* first) {
     return create_Student(vorname, nachname, studiengang, matrikelnummer, geburtsdatum, studienbeginn, studienende);
 }
 
-void addStudent(Student** first, Student** last) {
-    Student* newStudent = inputStudent(*first);
+void addStudent(Student** first, Student** last, Datum heute) {
+    Student* newStudent = inputStudent(*first, heute);
 
     if (newStudent == NULL) {
         printf("Fehler beim Erstellen des Studenten.\n");
@@ -426,6 +426,8 @@ int main() {
         last = last->next;
     }
 
+    Datum heute = datum_heute();
+
     printf("+------------+------------+-------------+--------------+------------+------------+------------+\n"
            "|               Willkommen bei StudentSync Ihrem Studentenverwaltungsprogramm                 |\n"
            "+------------+------------+-------------+--------------+------------+------------+------------+\n");
@@ -455,7 +457,7 @@ int main() {
         switch (auswahl) {
             case 1:
                 printf("| Student hinzuf\x81gen - F\x81gen Sie einen neuen Studenten zur Liste hinzu. |\n");
-                addStudent(&first, &last);
+                addStudent(&first, &last, heute);
             break;
             case 2:
                 printf("| Studenten suchen - Finden Sie einen Studenten per Matrikelnummer |\n");
