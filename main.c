@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h> // Wichtig für strcasecmp
 #include <ctype.h>
 #include <stdbool.h>
+#ifdef _WIN32
+    #define strcasecmp _stricmp
+#endif
+
+
 
 typedef struct {
     int tag;
